@@ -6,6 +6,7 @@ package com.number26.transactionservice.controller;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.number26.transactionservice.data.TransactionData;
+import com.number26.transactionservice.business.TransactionServiceBusiness;
 import com.number26.transactionservice.domain.Status;
 import com.number26.transactionservice.domain.Sum;
 import com.number26.transactionservice.domain.Transaction;
@@ -30,7 +31,7 @@ import com.number26.transactionservice.domain.Transaction;
 @RequestMapping("/transactionservice")
 public class TransactionServiceController {
 
-    private static final TransactionData inMemoryTransactions = new TransactionData();
+    private TransactionServiceBusiness business;
 
     @RequestMapping(path = "/transaction/{transactionId}", method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,7 +42,7 @@ public class TransactionServiceController {
             status.setStatus(Status.ERROR);
         } else {
             transaction.setId(transactionId);
-            inMemoryTransactions.put(transactionId, transaction);
+            business.save(transaction);
             status.setStatus(Status.OK);
         }
         return status;
@@ -51,20 +52,29 @@ public class TransactionServiceController {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Transaction getTransactionById(@PathVariable long transactionId) {
-        return inMemoryTransactions.get(transactionId);
+        return business.getById(transactionId);
     }
 
     @RequestMapping(path = "/types/{type}", method = RequestMethod.GET)
     @ResponseBody
     public List<Long> getTransactionIdsByTypes(@PathVariable String type) {
-        return inMemoryTransactions.getTransactionIdsByType(type);
+        return business.getIdsByType(type);
     }
 
     @RequestMapping(path = "/sum/{transactionId}", method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Sum getSumOfAmountOfAllChildTransactions(@PathVariable long transactionId) {
-        return new Sum(inMemoryTransactions.getSumOfAmountOfAllChildTransactions(transactionId));
+        return new Sum(business.getSumOfAmountOfAllChilds(transactionId));
+    }
+
+    /**
+     * @param business
+     *            the business to set
+     */
+    @Autowired
+    public void setBusiness(TransactionServiceBusiness business) {
+        this.business = business;
     }
 
 }
