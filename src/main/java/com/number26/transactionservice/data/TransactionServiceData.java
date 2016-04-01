@@ -7,13 +7,16 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
 import com.number26.transactionservice.domain.Transaction;
 
 /**
  * @author HashimR
  *
  */
-public class TransactionData extends ConcurrentHashMap<Long, Transaction> {
+@Repository
+public class TransactionServiceData extends ConcurrentHashMap<Long, Transaction> {
 
     private static final long serialVersionUID = 1L;
 

@@ -8,7 +8,7 @@ package com.number26.transactionservice.domain;
  *
  */
 public class Status {
-    
+
     public static final String OK = "ok";
     public static final String ERROR = "error";
 
