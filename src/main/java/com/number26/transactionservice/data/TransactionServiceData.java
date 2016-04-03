@@ -4,35 +4,26 @@
 package com.number26.transactionservice.data;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Repository;
 
 import com.number26.transactionservice.domain.Transaction;
 
 /**
- * Data layer where temporarily storing transactions in a ConcurrentHashMap 
+ * Data layer where temporarily storing transactions in a ConcurrentHashMap
+ * 
  * @author HashimR
  *
  */
-@Repository
-public class TransactionServiceData extends ConcurrentHashMap<Long, Transaction> {
+public interface TransactionServiceData {
 
-    private static final long serialVersionUID = 1L;
+    Transaction save(long transactionId, Transaction transaction);
 
-    public List<Long> getTransactionIdsByType(String type) {
-        return this.entrySet().stream().filter(t -> t.getValue().getType().equals(type)).map(t -> t.getValue().getId())
-            .collect(Collectors.toList());
-    }
+    Transaction getTransaction(long transactionId);
 
-    /**
-     * @param transactionId
-     * @return
-     */
-    public Double getSumOfAmountOfAllChildTransactions(long transactionId) {
-        return this.entrySet().stream()
-            .filter(t -> t.getValue().getParentId() == null ? false : t.getValue().getParentId() == transactionId)
-            .mapToDouble(t -> t.getValue().getAmount()).sum();
-    }
+    boolean contains(long transactionId);
+
+    List<Long> getIdsByType(String type);
+
+    Double getSumOfAmountOfAllChildren(long transactionId);
+
+    void clearData();
 }

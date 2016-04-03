@@ -30,7 +30,7 @@ public class TransactionServiceBusinessImpl implements TransactionServiceBusines
         Status status = new Status();
         if (transactionValid(transactionId, transaction, status)) {
             transaction.setId(transactionId);
-            inMemoryTransactions.put(transaction.getId(), transaction);
+            inMemoryTransactions.save(transaction.getId(), transaction);
             status.setStatus(Status.OK);
         } else {
             status.setStatus(Status.ERROR);
@@ -57,7 +57,7 @@ public class TransactionServiceBusinessImpl implements TransactionServiceBusines
             if (transactionId == transaction.getParentId()) {
                 reason = Status.PARENT_ID_SAME;
                 valid = false;
-            } else if (!inMemoryTransactions.containsKey(transaction.getParentId())) {
+            } else if (!inMemoryTransactions.contains(transaction.getParentId())) {
                 reason = Status.PARENT_ID_NOT_EXISTS;
                 valid = false;
             }
@@ -71,7 +71,7 @@ public class TransactionServiceBusinessImpl implements TransactionServiceBusines
      * @return
      */
     public Transaction getById(long transactionId) {
-        return inMemoryTransactions.get(transactionId);
+        return inMemoryTransactions.getTransaction(transactionId);
     }
 
     /**
@@ -79,7 +79,7 @@ public class TransactionServiceBusinessImpl implements TransactionServiceBusines
      * @return
      */
     public List<Long> getIdsByType(String type) {
-        return inMemoryTransactions.getTransactionIdsByType(type);
+        return inMemoryTransactions.getIdsByType(type);
     }
 
     /**
@@ -87,7 +87,7 @@ public class TransactionServiceBusinessImpl implements TransactionServiceBusines
      * @return
      */
     public Sum getSumOfAmountOfAllChilds(long transactionId) {
-        return new Sum(inMemoryTransactions.getSumOfAmountOfAllChildTransactions(transactionId));
+        return new Sum(inMemoryTransactions.getSumOfAmountOfAllChildren(transactionId));
     }
 
     /**

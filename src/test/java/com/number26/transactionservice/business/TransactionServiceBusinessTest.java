@@ -27,7 +27,7 @@ public class TransactionServiceBusinessTest extends AbstractTestNGSpringContextT
 
     @AfterMethod
     private void emptyInMemoryTransactions() {
-        inMemoryTransactions.clear();
+        inMemoryTransactions.clearData();
     }
 
     @Test
@@ -35,8 +35,8 @@ public class TransactionServiceBusinessTest extends AbstractTestNGSpringContextT
         Status status = business.save(1, getTransaction(100d, "cars", null));
 
         Assert.assertEquals(status.getStatus(), Status.OK);
-        Assert.assertEquals(inMemoryTransactions.get(1l).getAmount(), 100d);
-        Assert.assertEquals(inMemoryTransactions.get(1l).getType(), "cars");
+        Assert.assertEquals(inMemoryTransactions.getTransaction(1l).getAmount(), 100d);
+        Assert.assertEquals(inMemoryTransactions.getTransaction(1l).getType(), "cars");
     }
 
     @Test
