@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.number26.transactionservice.domain.Transaction;
 
 /**
+ * Data layer where temporarily storing transactions in a ConcurrentHashMap 
  * @author HashimR
  *
  */

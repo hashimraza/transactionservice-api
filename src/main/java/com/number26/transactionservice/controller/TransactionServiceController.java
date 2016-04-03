@@ -60,6 +60,12 @@ public class TransactionServiceController {
         return new ResponseEntity<Status>(status, httpStatus);
     }
 
+    /**
+     * Method that returns a Transaction by id
+     * 
+     * @param transactionId
+     * @return
+     */
     @RequestMapping(path = "/transaction/{transactionId}", method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -72,6 +78,12 @@ public class TransactionServiceController {
         return new ResponseEntity<Transaction>(transaction, httpStatus);
     }
 
+    /**
+     * Method that returns all Transaction ids by type
+     * 
+     * @param type
+     * @return
+     */
     @RequestMapping(path = "/types/{type}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<List<Long>> getTransactionIdsByTypes(@PathVariable String type) {
@@ -83,6 +95,12 @@ public class TransactionServiceController {
         return new ResponseEntity<List<Long>>(transactionIds, httpStatus);
     }
 
+    /**
+     * Method that returns sum of all children of a Transaction id
+     * 
+     * @param transactionId
+     * @return
+     */
     @RequestMapping(path = "/sum/{transactionId}", method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

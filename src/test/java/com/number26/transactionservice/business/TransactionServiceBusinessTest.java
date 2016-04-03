@@ -41,7 +41,7 @@ public class TransactionServiceBusinessTest extends AbstractTestNGSpringContextT
 
     @Test
     public void testSaveTransactionWithoutAmount() {
-        Status status = business.save(1, getTransaction(0d, "cars", null));
+        Status status = business.save(1, getTransaction(null, "cars", null));
 
         Assert.assertEquals(status.getStatus(), Status.ERROR);
         Assert.assertEquals(status.getReason(), Status.AMOUNT_EMPTY);
@@ -126,7 +126,7 @@ public class TransactionServiceBusinessTest extends AbstractTestNGSpringContextT
      * @param object
      * @return
      */
-    private Transaction getTransaction(double amount, String type, Long parentId) {
+    private Transaction getTransaction(Double amount, String type, Long parentId) {
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setType(type);
